@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%=title%></title>
+  </head>
+  <body>
+    <h1>File uploader</h1>
+    <h2>Create an account</h2>
+    <form action="/create-account" method="POST">
+      <label>
+        Name :
+        <input type="text" name="name" />
+      </label>
+      <label>
+        Password :
+        <input type="text" name="password" />
+      </label>
+      <button type="submit">Create</button>
+    </form>
+  </body>
+</html>

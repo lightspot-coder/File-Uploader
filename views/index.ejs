@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=title%></title>
+</head>
+<body>
+    <h1>File uploader</h1>
+    <%if(locals.user){%>
+        <h2>Welcolem back <%=user.name%></h2>
+    <%}else{%>
+        <a href="/create-account">Create an account</a>
+        <a href="/log-in">Log in</a>
+    <%}%>
+</body>
+</html>
