@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <title><%=title%></title>
+</head>
+<body>
+    <h1>File uploader</h1>
+    <%if(locals.currentUser){%>
+    <h2>update folder name with id <%=currentFolder.id%></h2>
+    <form action="/user/<%=currentUser.name%>/update-folder" method="post">
+        <input type="hidden" name="folderId" value=<%=currentFolder.id%>>
+        <label>Input new name : <input type="text" name="newName" value=<%=currentFolder.name%>></label>
+        <button type="submit">Update</button>
+    </form>
+    <%}else{%>
+        <h2>You must log in to update a folder name</h2>
+    <%}%>
+    <a href="/">Back home</a>
+</body>
+</html>

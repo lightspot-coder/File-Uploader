@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <title><%=title%></title>
+  </head>
+  <body>
+    <h1>File uploader</h1>
+    <%if(locals.currentUser){%>
+    <h2>Create folder form on <%=parentFolderId%></h2>
+    <form action="/user/<%=currentUser.name%>/create-folder" method="post">
+        <input type="hidden" name="parentFolderId" value=<%=parentFolderId%>>
+      <label>Folder name : <input type="text" name="folderName" /></label>
+      <button type="submit">Create</button>
+    </form>
+    <%}else{%>
+        <h2>You cant see this page if you are not log in</h2>
+        <a href="/">back home</a>
+    <%}%>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <title><%=title%></title>
+</head>
+<body>
+    <h1>File Uploader</h1>
+    <%if(locals.currentUser){%>
+        <h2>Information of the file : </h2>
+        <ul>
+            <li><b>name : </b> <%=file.originalName%></li>
+            <li><b>size : </b> <%=file.size%> bytes</li>
+            <li><b>type : </b> <%=file.type%></li>
+            <li><b>upload time : </b> <%=file.uploadTime%></li>
+        </ul>
+        <a href="<%=file.url%>" download>Download</a>
+        <a href="/user/<%=currentUser.name%>/delete-file?fileId=<%=file.id%>">Delete file</a>
+    <%}else{%>
+        <h2>You must log in to see this page</h2>
+    <%}%>
+    <br>
+    <br>
+    <div>
+    <a href="/user/<%=currentUser.name%>/?parentFolderId=<%=file.folderId%>">Back</a>
+    <br>
+    <a href="/">Back home</a>
+    </div>
+</body>
+</html>
