@@ -22,7 +22,7 @@ model Session {
 
 model User { 
   id    Int     @id @default(autoincrement()) 
-  name  String
+  userName  String @unique
   password String
   directoryTree  Folder[] 
 }

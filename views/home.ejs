@@ -9,8 +9,8 @@
 <body>
     <h1>File uploader</h1>
     <%if(locals.currentUser){%>
-        <h2>Welcome back <%=currentUser.name%></h2>
-        <a href="/user/<%=currentUser.name%>/">Show your root folder</a>
+        <h2>Welcome back <%=currentUser.userName%></h2>
+        <a href="/user/<%=currentUser.userName%>/">Show your root folder</a>
         <a href="/log-out">Log out</a>
     <%}else{%>
         <a href="/create-account">Create an account</a>

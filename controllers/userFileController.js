@@ -21,36 +21,47 @@ function uploadFile_GET(req, res) {
 }
 
 async function uploadFile_POST(req, res) {
-  //console.log(req.file);
-
   if (req.file) {
-    // upload the file to the clodinary service
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      asset_folder: `/${req.user.name}`,
-    });
-    console.log(result);
-    // delete file in the local storage
+    try {
+      // upload the file to the clodinary service
+      console.log(req.file);
+
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        asset_folder: `/${req.user.userName}`,
+        resource_type: "auto",
+      });
+
+      console.log(result);
+      // delete file in the local storage
+      /*
     fs.unlink(req.file.path, (err) => {
       if (err) console.log(err);
     });
-    // create file in the db
-    const url = await cloudinary.url(result.public_id, {
-      flags: "attachment",
-    });
-    const file = await prisma.file.create({
-      data: {
-        publicId: result.public_id,
-        folderId: Number(req.body.currentFolderId),
-        originalName: req.file.originalname,
-        uploadTime: Date(),
-        url: url,
-        size: Number(req.file.size),
-        type: req.file.mimetype,
-      },
-    });
-    res.redirect(
-      "/user/" + req.user.name + "/?parentFolderId=" + file.folderId,
-    );
+*/
+      // create file in the db
+      const url = await cloudinary.url(result.public_id, {
+        flags: "attachment",
+        resource_type: result.resource_type,
+      });
+      console.log(url);
+      const file = await prisma.file.create({
+        data: {
+          publicId: result.public_id,
+          folderId: Number(req.body.currentFolderId),
+          originalName: req.file.originalname,
+          uploadTime: Date(),
+          url: url,
+          size: Number(req.file.size),
+          type: req.file.mimetype,
+        },
+      });
+      res.redirect(
+        "/user/" + req.user.userName + "/?parentFolderId=" + file.folderId,
+      );
+    } catch (err) {
+      console.log(err);
+      res.redirect("error");
+    }
   } else {
     res.redirect("error");
   }
@@ -72,16 +83,21 @@ async function fileInfo_GET(req, res) {
 async function deleteFile_GET(req, res) {
   if (req.query.fileId) {
     // delete the fail in the db
+
     const deleteFile = await prisma.file.delete({
       where: {
         id: Number(req.query.fileId),
       },
     });
+
+    console.log(deleteFile);
     // delete the fail in cloudinary
-    const result = await cloudinary.uploader.destroy(deleteFile.publicId);
+    const result = await cloudinary.uploader.destroy(deleteFile.publicId, {
+      resource_type: deleteFile.type.split("/")[0],
+    });
     console.log(result);
     res.redirect(
-      "/user/" + req.user.name + "/?parentFolderId=" + deleteFile.folderId,
+      "/user/" + req.user.userName + "/?parentFolderId=" + deleteFile.folderId,
     );
   } else {
     console.log("wrong request query in delete file");

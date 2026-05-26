@@ -7,11 +7,12 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
+
 //import { prisma } from "./lib/prisma.js";
 const prisma = require("./lib/prisma.js");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "uploads/" }, { fileFilter: fileFilter });
 const userRouter = require("./routes/userRouter.js");
 
 const app = express();
@@ -51,46 +52,23 @@ app.get("/", (req, res) => {
     title: "home",
   });
 });
-app.get("/create-account", (req, res) =>
-  res.render("create-account", {
-    title: "create account",
-  }),
-);
+app.get("/create-account", userRouter);
 
-app.post("/create-account", async (req, res, next) => {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    // create user with default root folder
-    const user = await prisma.user.create({
-      data: {
-        name: req.body.name,
-        password: hashedPassword,
-        directoryTree: {
-          create: [
-            {
-              name: "root",
-            },
-          ],
-        },
-      },
-    });
-    res.redirect("/");
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
+app.post("/create-account", userRouter);
 
 app.get("/log-in", (req, res) => {
   res.render("log-in", {
     title: "log-in",
+    message: req.session.messages,
   });
+  req.session.messages = undefined;
 });
 app.post(
   "/log-in",
   passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/",
+    failureMessage: true,
+    failureRedirect: "/log-in",
   }),
 );
 
@@ -130,7 +108,7 @@ passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
       const user = await prisma.user.findFirst({
-        where: { name: username },
+        where: { userName: username },
       });
 
       if (!user) {
@@ -141,7 +119,7 @@ passport.use(
         // passwords do not match!
         return done(null, false, { message: "Incorrect password" });
       }
-      console.log("all good welcome ", user.name);
+      console.log("all good welcome ", user.userName);
       return done(null, user);
     } catch (err) {
       return done(err);
@@ -164,3 +142,5 @@ passport.deserializeUser(async (id, done) => {
     done(err);
   }
 });
+
+function fileFilter(req, file, cb) {}

@@ -9,10 +9,17 @@
   <body>
     <h1>File uploader</h1>
     <h2>Create an account</h2>
+    <%if(locals.errors){%>
+      <ul>
+      <%errors.map(error => {%>
+        <li><b><%=error.msg%></b></li>
+        <%})%>
+      </ul>
+    <%}%>
     <form action="/create-account" method="POST">
       <label>
-        Name :
-        <input type="text" name="name" />
+        User Name :
+        <input type="text" name="userName" />
       </label>
       <label>
         Password :

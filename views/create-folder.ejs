@@ -9,15 +9,23 @@
   <body>
     <h1>File uploader</h1>
     <%if(locals.currentUser){%>
+      <%if(locals.errors){%>
+        <ul>
+        <%errors.map(error => {%>
+          <li><b><%=error.msg%></b></li>
+          <%})%>
+        </ul>
+      <%}%>
     <h2>Create folder form on <%=parentFolderId%></h2>
-    <form action="/user/<%=currentUser.name%>/create-folder" method="post">
+    <form action="/user/<%=currentUser.userName%>/create-folder" method="post">
         <input type="hidden" name="parentFolderId" value=<%=parentFolderId%>>
       <label>Folder name : <input type="text" name="folderName" /></label>
       <button type="submit">Create</button>
     </form>
+    <a href="/user/<%=currentUser.userName%>/?parentFolderId=<%=parentFolderId%>">Back</a>
     <%}else{%>
         <h2>You cant see this page if you are not log in</h2>
-        <a href="/">back home</a>
     <%}%>
+    <a href="/">back home</a>
   </body>
 </html>

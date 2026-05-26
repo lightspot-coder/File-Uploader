@@ -81,16 +81,45 @@ async function createFolder_POST(req, res) {
       id: req.user.id,
     },
   });
-  const folder = await prisma.folder.create({
-    data: {
-      name: req.body.folderName,
-      userId: user.id,
-      parentFolderId: Number(req.body.parentFolderId),
+
+  // check if the folder name already exist
+  const folderExist = await prisma.folder.findFirst({
+    where: {
+      AND: {
+        name: req.body.folderName,
+        parentFolderId: Number(req.body.parentFolderId),
+      },
     },
   });
-  res.redirect(
-    "/user/" + req.user.name + "/?parentFolderId=" + req.body.parentFolderId,
-  );
+  console.log(folderExist);
+  if (folderExist == null) {
+    // if folder doesn't exist, create
+    const folder = await prisma.folder.create({
+      data: {
+        name: req.body.folderName,
+        userId: user.id,
+        parentFolderId: Number(req.body.parentFolderId),
+      },
+    });
+    res.redirect(
+      "/user/" +
+        req.user.userName +
+        "/?parentFolderId=" +
+        req.body.parentFolderId,
+    );
+  } else {
+    // if folder doesn't exist in the db, tell it to the user
+    res.render("create-folder", {
+      title: "error create folder",
+      parentFolderId: req.body.parentFolderId,
+      currentUser: req.user,
+      errors: [
+        {
+          msg: `${req.body.folderName} already exist in this directory`,
+        },
+      ],
+    });
+  }
 }
 
 async function findAllSubFolders(userId, id) {
@@ -182,7 +211,7 @@ async function deleteFolder_GET(req, res) {
 
   res.redirect(
     "/user/" +
-      req.user.name +
+      req.user.userName +
       "/?parentFolderId=" +
       folderToDelete.parentFolderId,
   );
@@ -210,7 +239,7 @@ async function updateFolder_POST(req, res) {
     },
   });
   res.redirect(
-    "/user/" + req.user.name + "/?parentFolderId=" + updateFolder.id,
+    "/user/" + req.user.userName + "/?parentFolderId=" + updateFolder.id,
   );
 }
 

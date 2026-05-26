@@ -17,14 +17,14 @@
             <li><b>upload time : </b> <%=file.uploadTime%></li>
         </ul>
         <a href="<%=file.url%>" download>Download</a>
-        <a href="/user/<%=currentUser.name%>/delete-file?fileId=<%=file.id%>">Delete file</a>
+        <a href="/user/<%=currentUser.userName%>/delete-file?fileId=<%=file.id%>">Delete file</a>
     <%}else{%>
         <h2>You must log in to see this page</h2>
     <%}%>
     <br>
     <br>
     <div>
-    <a href="/user/<%=currentUser.name%>/?parentFolderId=<%=file.folderId%>">Back</a>
+    <a href="/user/<%=currentUser.userName%>/?parentFolderId=<%=file.folderId%>">Back</a>
     <br>
     <a href="/">Back home</a>
     </div>

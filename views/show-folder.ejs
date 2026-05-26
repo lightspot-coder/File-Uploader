@@ -15,7 +15,7 @@
         <ul class="folder-list">
         <%locals.subFolders.map(folder => {%>
             <li class="folder">
-            <a href="/user/<%=currentUser.name%>/?parentFolderId=<%=folder.id%>"><%=folder.name%></a>
+            <a href="/user/<%=currentUser.userName%>/?parentFolderId=<%=folder.id%>"><%=folder.name%></a>
             </li>
         <%})}%>
         </ul>
@@ -24,19 +24,19 @@
         <ul class="files-list">
         <%locals.files.map(file => {%>
             <li class="file">
-            <a href="/user/<%=currentUser.name%>/file-info?fileId=<%=file.id%>"><%=file.originalName%></a>
+            <a href="/user/<%=currentUser.userName%>/file-info?fileId=<%=file.id%>"><%=file.originalName%></a>
             </li>
         <%})}%>
         </ul>
         <div class="folder_options_div">
-        <a href="/user/<%=currentUser.name%>/create-folder?parentFolderId=<%=currentFolder.id%>">Create a folder</a>
-        <a href="/user/<%=currentUser.name%>/upload-file?folderId=<%=currentFolder.id%>">Upload a file</a>
+        <a href="/user/<%=currentUser.userName%>/create-folder?parentFolderId=<%=currentFolder.id%>">Create a folder</a>
+        <a href="/user/<%=currentUser.userName%>/upload-file?folderId=<%=currentFolder.id%>">Upload a file</a>
         <%if(currentFolder.name != "root"){%>
-                <a href="/user/<%=currentUser.name%>/update-folder?folderId=<%=currentFolder.id%>">Change folder's name</a>    
-        <a href="/user/<%=currentUser.name%>/delete-folder?folderId=<%=currentFolder.id%>">Delete this folder</a>
+                <a href="/user/<%=currentUser.userName%>/update-folder?folderId=<%=currentFolder.id%>">Change folder's name</a>    
+        <a href="/user/<%=currentUser.userName%>/delete-folder?folderId=<%=currentFolder.id%>">Delete this folder</a>
         <br>
         <br>
-        <a href="/user/<%=currentUser.name%>/?parentFolderId=<%=currentFolder.parentFolderId%>">Back</a>
+        <a href="/user/<%=currentUser.userName%>/?parentFolderId=<%=currentFolder.parentFolderId%>">Back</a>
         <%}%>
         </div>
         

@@ -7,6 +7,9 @@
     <title><%=title%></title>
   </head>
   <h1>File uploader</h1>
+  <%if(locals.message){%>
+      <p><b>Error : <%=locals.message%></b></p>
+  <%}%>
   <h2>please log in</h2>
   <form action="/log-in" method="POST">
     <label for="username">Username</label>
@@ -15,5 +18,6 @@
     <input id="password" name="password" type="password" />
     <button type="submit">Log In</button>
   </form>
+  <a href="/">Back home</a>
   <body></body>
 </html>

@@ -10,7 +10,7 @@
     <h1>File uploader</h1>
     <%if(locals.currentUser){%>
     <h2>update folder name with id <%=currentFolder.id%></h2>
-    <form action="/user/<%=currentUser.name%>/update-folder" method="post">
+    <form action="/user/<%=currentUser.userName%>/update-folder" method="post">
         <input type="hidden" name="folderId" value=<%=currentFolder.id%>>
         <label>Input new name : <input type="text" name="newName" value=<%=currentFolder.name%>></label>
         <button type="submit">Update</button>
