@@ -16,8 +16,10 @@
             <li><b>type : </b> <%=file.type%></li>
             <li><b>upload time : </b> <%=file.uploadTime%></li>
         </ul>
-        <a href="<%=file.url%>" download>Download</a>
-        <a href="/user/<%=currentUser.userName%>/delete-file?fileId=<%=file.id%>">Delete file</a>
+        <div class="fileOptions">
+            <a href="<%=file.url%>" download>Download</a>
+            <a href="/user/<%=currentUser.userName%>/delete-file?fileId=<%=file.id%>">Delete file</a>
+        </div>
     <%}else{%>
         <h2>You must log in to see this page</h2>
     <%}%>

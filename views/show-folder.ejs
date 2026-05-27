@@ -12,20 +12,28 @@
         <h2>Current folder : <%=currentFolder.name%></h2>
         <%if(locals.subFolders){%>
         <p><b>subfolders : </b></p>    
-        <ul class="folder-list">
+        <ul class="folders">
         <%locals.subFolders.map(folder => {%>
             <li class="folder">
-            <a href="/user/<%=currentUser.userName%>/?parentFolderId=<%=folder.id%>"><%=folder.name%></a>
+            <a class="folderLink" href="/user/<%=currentUser.userName%>/?parentFolderId=<%=folder.id%>"><%=folder.name%></a>
             </li>
         <%})}%>
         </ul>
         <%if(locals.files){%>
         <p><b>files : </b></p>
-        <ul class="files-list">
+        <ul class="files">
         <%locals.files.map(file => {%>
-            <li class="file">
-            <a href="/user/<%=currentUser.userName%>/file-info?fileId=<%=file.id%>"><%=file.originalName%></a>
-            </li>
+            <%if(file.type == "image/jpeg" || file.type == "image/png"){%>
+                <li class="imageFile">
+                <a class="fileLink" href="/user/<%=currentUser.userName%>/file-info?fileId=<%=file.id%>"><%=file.originalName%></a>
+                </li>
+            <%}%>
+            <%if(file.type == "video/mp4"){%>
+                <li class="videoFile">
+                <a class="fileLink" href="/user/<%=currentUser.userName%>/file-info?fileId=<%=file.id%>"><%=file.originalName%></a>
+                </li>
+            <%}%>
+            
         <%})}%>
         </ul>
         <div class="folder_options_div">
@@ -34,16 +42,19 @@
         <%if(currentFolder.name != "root"){%>
                 <a href="/user/<%=currentUser.userName%>/update-folder?folderId=<%=currentFolder.id%>">Change folder's name</a>    
         <a href="/user/<%=currentUser.userName%>/delete-folder?folderId=<%=currentFolder.id%>">Delete this folder</a>
-        <br>
-        <br>
-        <a href="/user/<%=currentUser.userName%>/?parentFolderId=<%=currentFolder.parentFolderId%>">Back</a>
         <%}%>
         </div>
-        
+        <br>
+        <br>
+        <%if(currentFolder.name != "root"){%>
+        <a href="/user/<%=currentUser.userName%>/?parentFolderId=<%=currentFolder.parentFolderId%>">Back</a>
+        <%}%>
     <%}else{%>
         <h2>You must log in to see the content of a file</h2>
     <%}%>
    
     <a href="/">Back home</a>
+    <br>
+    <a class="imgCredits" href="https://www.flaticon.com/free-icons/folder" title="folder icons">Folder icons created by kmg design - Flaticon</a>
 </body>
 </html>

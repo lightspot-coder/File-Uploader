@@ -12,7 +12,7 @@ const bcrypt = require("bcryptjs");
 const prisma = require("./lib/prisma.js");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" }, { fileFilter: fileFilter });
+const upload = multer({ dest: "uploads/", fileFilter: fileFilter });
 const userRouter = require("./routes/userRouter.js");
 
 const app = express();
@@ -143,4 +143,46 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-function fileFilter(req, file, cb) {}
+function fileFilter(req, file, cb) {
+  // check valid type files to upload
+  if (
+    file.mimetype !== "image/jpeg" &&
+    file.mimetype !== "image/png" &&
+    file.mimetype !== "video/mp4"
+  ) {
+    const error = new multer.MulterError("LIMIT_UNEXPECTED_FILE");
+
+    // Customize the error message
+    error.message = `${file.mimetype} not allowed. You can upload PNG-JPEG-MP4 files`;
+    return cb(error, false);
+  }
+
+  // check the file size (max 5MB)
+  const fileSize = parseInt(req.headers["content-length"]);
+  if (fileSize > 5 * 1024 * 1024) {
+    const error = new multer.MulterError("LIMIT_UNEXPECTED_FILE");
+
+    // Customize the error message
+    error.message = `File size too large. Max limit is 5MB!`;
+    return cb(error, false);
+  }
+
+  // accept the file
+  cb(null, true);
+}
+
+// errors
+
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    // multer error
+    res.render("upload-file", {
+      title: "error uploading",
+      currentUser: req.user,
+      currentFolderId: req.body.currentFolderId,
+      error: "Error : " + err.message,
+    });
+  } else if (err) {
+    console.log(err);
+  }
+});

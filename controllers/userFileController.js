@@ -33,11 +33,11 @@ async function uploadFile_POST(req, res) {
 
       console.log(result);
       // delete file in the local storage
-      /*
-    fs.unlink(req.file.path, (err) => {
-      if (err) console.log(err);
-    });
-*/
+
+      fs.unlink(req.file.path, (err) => {
+        if (err) console.log(err);
+      });
+
       // create file in the db
       const url = await cloudinary.url(result.public_id, {
         flags: "attachment",

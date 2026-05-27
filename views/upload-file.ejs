@@ -10,6 +10,9 @@
     <h1>File uploader</h1>
     <%if(locals.currentUser){%>
     <h2>upload file form</h2>
+      <%if(locals.error){%>
+          <p><b><%=error%></b></p>
+      <%}%>
     <form action="/user/<%=currentUser.userName%>/upload-file" method="post" enctype="multipart/form-data">
       <input type="hidden" name="currentFolderId" value=<%=currentFolderId%>>
       <label>Select a file : <input type="file" name="myfile" /></label>

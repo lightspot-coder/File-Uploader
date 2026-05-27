@@ -49,6 +49,9 @@ async function showFolder_GET(req, res) {
       name: true,
       parentFolderId: true,
     },
+    orderBy: {
+      name: "asc",
+    },
   });
   const files = await prisma.file.findMany({
     where: {
@@ -57,6 +60,10 @@ async function showFolder_GET(req, res) {
     select: {
       id: true,
       originalName: true,
+      type: true,
+    },
+    orderBy: {
+      originalName: "asc",
     },
   });
 

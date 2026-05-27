@@ -1,3 +1,71 @@
 body {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+}
+
+a {
+  margin: 10px;
+}
+
+a:hover {
+  margin: 10px;
+  padding: 5px;
+  background-color: rgb(116, 172, 172);
+}
+
+.fileLink {
+  all: unset;
+}
+
+.folders,
+.files {
+  list-style: none;
+}
+
+.folder {
+  background-image: url("./assets/folder.png");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 20px 20px;
+  padding-left: 25px;
+  margin-bottom: 5px;
+}
+
+.imageFile {
+  background-image: url("./assets/image.png");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 20px 20px;
+  padding-left: 25px;
+  margin-bottom: 5px;
+}
+
+.videoFile {
+  background-image: url("./assets/video-file.png");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 20px 20px;
+  padding-left: 25px;
+  margin-bottom: 5px;
+}
+
+.imgCredits {
+  margin-top: 100px;
+  all: unset;
+  color: rgb(116, 112, 112);
+  font-style: italic;
+}
+
+.folder_options_div {
+  padding: 10px;
+  border: 1px solid rgb(82, 78, 78);
+  border-radius: 5px;
+}
+
+.fileOptions {
+  padding: 10px;
+  border: 1px solid rgb(82, 78, 78);
+  border-radius: 5px;
 }
