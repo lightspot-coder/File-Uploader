@@ -16,7 +16,7 @@
           <%})%>
         </ul>
       <%}%>
-    <h2>Create folder form on <%=parentFolderId%></h2>
+    <h2>Create folder form</h2>
     <form action="/user/<%=currentUser.userName%>/create-folder" method="post">
         <input type="hidden" name="parentFolderId" value=<%=parentFolderId%>>
       <label>Folder name : <input type="text" name="folderName" /></label>

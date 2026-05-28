@@ -1,5 +1,4 @@
 const prisma = require("../lib/prisma.js");
-//const cloudinary = require("./userFileController.js");
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
@@ -129,6 +128,9 @@ async function createFolder_POST(req, res) {
   }
 }
 
+// function to find all the subfolders inside of a user's folder
+// the result is an array of the id of all of the subfolders finded in the database
+
 async function findAllSubFolders(userId, id) {
   let folderId = Number(id);
   let allSubFoldersToVisited = [];
@@ -145,12 +147,8 @@ async function findAllSubFolders(userId, id) {
   });
   allSubFoldersToVisited = allSubFoldersToVisited.concat(subFolders);
   allSubFoldersFinded = allSubFoldersFinded.concat(subFolders);
-  //console.log(allSubFoldersToVisited);
   while (allSubFoldersToVisited.length != 0) {
     folderId = allSubFoldersToVisited.shift().id;
-    //console.log(folderId);
-    //console.log(allSubFoldersToVisited);
-
     const subFolders = await prisma.folder.findMany({
       where: {
         userId: userId,
@@ -160,15 +158,11 @@ async function findAllSubFolders(userId, id) {
         id: true,
       },
     });
-    //console.log(subFolders);
     if (subFolders.length != 0) {
       allSubFoldersFinded = allSubFoldersFinded.concat(subFolders);
       allSubFoldersToVisited = allSubFoldersToVisited.concat(subFolders);
-      //console.log("\n");
     }
-    //console.log(allSubFoldersToVisited);
   }
-  //console.log(allSubFoldersFinded);
   let allSubFolders = [];
   allSubFoldersFinded.map((folder) => {
     allSubFolders.push(folder.id);
@@ -182,7 +176,6 @@ async function deleteFolder_GET(req, res) {
     req.user.id,
     req.query.folderId,
   );
-  console.log(allSubFoldersId);
   let allPublicIdFiles = [];
   //find all the public_id in the files for deleting in cluodinary
 
@@ -193,11 +186,12 @@ async function deleteFolder_GET(req, res) {
       },
       select: {
         publicId: true,
+        type: true,
       },
     });
     allPublicIdFiles = allPublicIdFiles.concat(file);
   }
-  console.log("\n");
+  console.log("files to be delete on cloudinary service :");
   console.log(allPublicIdFiles);
 
   //delete files on cluodinary
@@ -205,7 +199,11 @@ async function deleteFolder_GET(req, res) {
     console.log(allPublicIdFiles[i].publicId);
     const result = await cloudinary.uploader.destroy(
       allPublicIdFiles[i].publicId,
+      {
+        resource_type: allPublicIdFiles[i].type.split("/")[0],
+      },
     );
+    console.log("cloudinary result of deleting file : ");
     console.log(result);
   }
 
